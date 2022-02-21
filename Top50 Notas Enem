@@ -1,0 +1,19 @@
+#Importar pandas e abrir os microdados do Enem 2020
+import pandas as pd
+caminho = 'C:/Users/danie/Downloads/microdados_enem_2020/DADOS/MICRODADOS_ENEM_2020.csv'
+
+#Formar dataframe com colunas relevantes
+colunas = ['NU_INSCRICAO','NU_NOTA_LC','NU_NOTA_CH','NU_NOTA_CN','NU_NOTA_MT','NU_NOTA_REDACAO']
+dados = pd.read_csv(caminho, sep=';',usecols=colunas, encoding='ISO-8859-1')
+display(dados)
+
+#Ranquear candidatos por média aritmética e excluir ausentes
+Enem_Limpo = dados[['NU_NOTA_LC','NU_NOTA_CH','NU_NOTA_CN','NU_NOTA_MT','NU_NOTA_REDACAO']]
+Enem_Limpo = Enem_Limpo.dropna()
+Enem_Limpo['MÉDIA'] = Enem_Limpo.mean(axis=1)
+Ranking = Enem_Limpo.sort_values(by='MÉDIA', ascending=False)
+display(Ranking)
+
+#Top50
+Top50 = Ranking.head(50)
+display(Top50)
